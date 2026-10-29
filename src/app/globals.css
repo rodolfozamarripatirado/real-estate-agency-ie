@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #f8f4ec;
+  --color-parchment: #efe8da;
+  --color-ink: #17211b;
+  --color-muted: #5d6a61;
+  --color-pine: #123f2e;
+  --color-pine-deep: #0a2a1e;
+  --color-sage: #dfe7dc;
+  --color-gold: #b08a4f;
+  --color-gold-light: #d8b87e;
+  --color-line: #ddd5c6;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-gold) 30%, transparent);
+  }
+}
+
+@layer components {
+  .wrap {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 76rem;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .wrap {
+      padding-inline: 2rem;
+    }
+  }
+
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    transition: background-color 150ms ease, color 150ms ease,
+      border-color 150ms ease;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    background-color: var(--color-pine);
+    color: var(--color-cream);
+    transition: background-color 150ms ease;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-pine-deep);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    border: 1px solid color-mix(in srgb, var(--color-pine) 30%, transparent);
+    color: var(--color-pine);
+    transition: background-color 150ms ease, border-color 150ms ease;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--color-pine);
+    background-color: color-mix(in srgb, var(--color-pine) 5%, transparent);
+  }
+
+  .btn-gold {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    background-color: var(--color-gold);
+    color: var(--color-pine-deep);
+    transition: background-color 150ms ease;
+  }
+
+  .btn-gold:hover {
+    background-color: #c29a5b;
+  }
+
+  .field {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-line);
+    background-color: rgb(255 255 255 / 0.7);
+    padding: 0.7rem 0.9rem;
+    font-size: 0.875rem;
+    color: var(--color-ink);
+    outline: none;
+    transition: border-color 150ms ease, background-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+
+  .field:focus {
+    border-color: var(--color-pine);
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgb(18 63 46 / 0.1);
+  }
+
+  .field::placeholder {
+    color: color-mix(in srgb, var(--color-muted) 60%, transparent);
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .card {
+    border-radius: 1rem;
+    border: 1px solid color-mix(in srgb, var(--color-line) 80%, transparent);
+    background-color: rgb(255 255 255 / 0.6);
+  }
+}
+
+/* Subtle paper grain used on warm sections */
+.grain {
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--color-pine) 7%, transparent) 0.5px,
+    transparent 0.5px
+  );
+  background-size: 6px 6px;
+}
+
+.pano:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  aspect-ratio: auto;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  scrollbar-width: none;
+}
