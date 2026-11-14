@@ -301,7 +301,7 @@ npm run dev
    for a public deployment.
 3. After this pull request has been merged, open **Actions → Initialize Prisma Postgres → Run workflow**. It creates the tables and seeds the
    demo properties and staff accounts once. The workflow does not print the secret values.
-4. In the Cloudflare Worker, enable the `nodejs_compat` compatibility flag under **Settings → Runtime**.
+4. In the Cloudflare Worker, check the compatibility date under **Settings → Runtime**. Dates on or after `2026-08-04` include Node.js compatibility by default; for an older date, add `nodejs_compat` under compatibility flags. Keep any existing flags.
 5. In **Settings → Variables and secrets → Production**, add `DATABASE_URL` with the pooled
    connection string and `AUTH_SECRET` with a newly generated random value. Keep `DIRECT_URL`
    in GitHub Actions for database setup; the running Worker does not need it.
