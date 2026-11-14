@@ -299,7 +299,7 @@ npm run dev
    `DATABASE_URL` (pooled), `DIRECT_URL` (direct), `ADMIN_EMAIL`, `ADMIN_PASSWORD`,
    `AGENT_EMAIL` and `AGENT_PASSWORD`. Use your own strong passwords; never use the demo defaults
    for a public deployment.
-3. Open **Actions → Initialize Prisma Postgres → Run workflow**. It creates the tables and seeds the
+3. After this pull request has been merged, open **Actions → Initialize Prisma Postgres → Run workflow**. It creates the tables and seeds the
    demo properties and staff accounts once. The workflow does not print the secret values.
 4. In the Cloudflare Worker, enable the `nodejs_compat` compatibility flag under **Settings → Runtime**.
 5. In **Settings → Variables and secrets → Production**, add `DATABASE_URL` with the pooled
