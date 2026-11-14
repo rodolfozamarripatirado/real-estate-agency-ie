@@ -123,6 +123,7 @@ Open <http://localhost:3000>. The staff portal is at <http://localhost:3000/logi
 | Variable | Required | Purpose |
 | --- | --- | --- |
 | `DATABASE_URL` | yes | PostgreSQL connection string. Use `?sslmode=require` for hosted databases. |
+| `DIRECT_URL` | database setup | Direct PostgreSQL connection string for Prisma schema and seed commands. |
 | `AUTH_SECRET` | yes | Signs the staff session JWT. Generate with `openssl rand -base64 32`. Rotating it logs everyone out. |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` | seed only | Administrator created by `npm run db:seed`. |
 | `AGENT_EMAIL` / `AGENT_PASSWORD` | seed only | Agent created by `npm run db:seed`. |
@@ -291,14 +292,29 @@ npm run dev
 
 ## Deployment
 
-1. Create a managed PostgreSQL database (Neon, Supabase, Aiven…) and copy its connection string.
-2. Set `DATABASE_URL`, `AUTH_SECRET` and `NEXT_PUBLIC_SITE_URL` in the hosting provider's
-   environment settings. Do **not** rely on the seeded demo passwords in production.
-3. Apply the schema during the release step: `npx prisma db push` (or `prisma migrate deploy` once
-   you start using migrations).
-4. Deploy to Vercel or any Node host. `npm run build` must run with the production variables present.
-5. Sign in, open `/admin/settings` to enter the real company details, then create real staff accounts
-   at `/admin/users` and delete the demo ones.
+### Cloudflare Workers with Prisma Postgres
+
+1. In Prisma Console, generate both the **pooled** and **direct** connection strings for your database.
+2. In GitHub, open **Settings → Secrets and variables → Actions** and add these repository secrets:
+   `DATABASE_URL` (pooled), `DIRECT_URL` (direct), `ADMIN_EMAIL`, `ADMIN_PASSWORD`,
+   `AGENT_EMAIL` and `AGENT_PASSWORD`. Use your own strong passwords; never use the demo defaults
+   for a public deployment.
+3. Open **Actions → Initialize Prisma Postgres → Run workflow**. It creates the tables and seeds the
+   demo properties and staff accounts once. The workflow does not print the secret values.
+4. In the Cloudflare Worker, enable the `nodejs_compat` compatibility flag under **Settings → Runtime**.
+5. In **Settings → Variables and secrets → Production**, add `DATABASE_URL` with the pooled
+   connection string and `AUTH_SECRET` with a newly generated random value. Keep `DIRECT_URL`
+   in GitHub Actions for database setup; the running Worker does not need it.
+6. Let Cloudflare build and deploy the `main` branch. The site can then read the seeded property data.
+   Sign in with the admin email and password you chose, open `/admin/settings`, and replace the demo
+   company details before sharing the admin portal.
+
+### Other Node.js hosts
+
+Set `DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET` and `NEXT_PUBLIC_SITE_URL` in the hosting
+provider's environment settings. Apply the schema with `npx prisma db push`, then seed with
+`npm run db:seed`. Deploy with `npm run build`. Do **not** rely on the seeded demo passwords in
+production.
 
 ---
 
