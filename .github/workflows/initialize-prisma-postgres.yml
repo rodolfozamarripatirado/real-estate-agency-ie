@@ -1,0 +1,48 @@
+name: Initialize Prisma Postgres
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  initialize:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DIRECT_URL: ${{ secrets.DIRECT_URL }}
+      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      AGENT_EMAIL: ${{ secrets.AGENT_EMAIL }}
+      AGENT_PASSWORD: ${{ secrets.AGENT_PASSWORD }}
+    steps:
+      - name: Check required secrets
+        shell: bash
+        run: |
+          missing=0
+          for name in DATABASE_URL DIRECT_URL ADMIN_EMAIL ADMIN_PASSWORD AGENT_EMAIL AGENT_PASSWORD; do
+            if [[ -z "${!name}" ]]; then
+              echo "::error title=Missing GitHub Actions secret::$name is required"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create database tables
+        run: npx prisma db push
+
+      - name: Add demo content and staff accounts
+        run: npm run db:seed

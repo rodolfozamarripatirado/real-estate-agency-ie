@@ -1,10 +1,12 @@
 generator client {
   provider = "prisma-client-js"
+  engineType = "client"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum Role {
@@ -191,3 +193,4 @@ model CompanySettings {
   heroImageUrl String @default("")
   updatedAt   DateTime @updatedAt
 }
+

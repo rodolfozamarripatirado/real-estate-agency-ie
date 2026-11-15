@@ -1,7 +1,15 @@
 import { PrismaClient, type TourType } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { hash } from "bcryptjs";
 
-const prisma = new PrismaClient();
+const connectionString = process.env.DIRECT_URL || process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error("Set DIRECT_URL or DATABASE_URL before running the seed script.");
+}
+
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({ connectionString, maxUses: 1 }),
+});
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@harbourandoak.ie";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Harbour2026!";
@@ -872,3 +880,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
